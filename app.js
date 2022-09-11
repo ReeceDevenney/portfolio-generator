@@ -1,15 +1,8 @@
 const inquirer = require('inquirer')
-// const fs = require('fs')
-// const generatePage = require('./src/page-template.js');
-
-// const pageHTML = generatePage(name, github)
-
-// fs.writeFile('index.html', generatePage(name, github), err => {
-//   if (err) throw err
+const fs = require('fs')
+const generatePage = require('./src/page-template.js');
 
 
-//   console.log('Portfolio complete! Check out index.html to see the output!')
-// })
 
 const promptUser = () => {
   return inquirer.prompt([
@@ -47,30 +40,30 @@ const promptUser = () => {
     },
     {
       type: 'input',
-  name: 'about',
-  message: 'Provide some information about yourself:',
-  when: ({ confirmAbout }) => {
-    if (confirmAbout) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+      name: 'about',
+      message: 'Provide some information about yourself:',
+      when: ({ confirmAbout }) => {
+        if (confirmAbout) {
+          return true;
+        } else {
+          return false;
+        }
+      }
 
     }
   ]);
 };
 
 const promptProject = portfolioData => {
-  
- 
+
+
   if (!portfolioData.projects) {
     portfolioData.projects = [];
   }
-  
 
-  
-  
+
+
+
   console.log(`
 =================
 Add a New Project
@@ -135,24 +128,27 @@ Add a New Project
       default: false
     }
   ])
-  .then(projectData => {
-    portfolioData.projects.push(projectData);
-    if (projectData.confirmAddProject) {
-      return promptProject(portfolioData);
-    } else {
-      return portfolioData;
-    }
-  });
+    .then(projectData => {
+      portfolioData.projects.push(projectData);
+      if (projectData.confirmAddProject) {
+        return promptProject(portfolioData);
+      } else {
+        return portfolioData;
+      }
+    });
 };
 
 
 promptUser()
   .then(promptProject)
   .then(portfolioData => {
-    console.log(portfolioData);
+    const pageHTML = generatePage(portfolioData)
+
+    fs.writeFile('index.html', pageHTML, err => {
+      if (err) throw err
+
+
+    //   console.log('Portfolio complete! Check out index.html to see the output!')
+    // });
   });
-
-
-
-
-
+})
