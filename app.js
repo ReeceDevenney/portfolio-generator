@@ -2,10 +2,6 @@ const inquirer = require('inquirer')
 const generatePage = require('./src/page-template.js');
 const { writeFile, copyFile } = require('./utils/generate-site.js');
 
-
-
-
-
 const promptUser = () => {
   return inquirer.prompt([
     {
@@ -58,13 +54,9 @@ const promptUser = () => {
 
 const promptProject = portfolioData => {
 
-
   if (!portfolioData.projects) {
     portfolioData.projects = [];
   }
-
-
-
 
   console.log(`
 =================
